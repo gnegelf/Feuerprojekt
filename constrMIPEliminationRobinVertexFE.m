@@ -62,7 +62,11 @@ for t=1:tn+1
     for i=1:N+1
         for j=1:N+1
             condM((t-1)*N1^2+(i-1)*N1+j,i2+(t-1)*N1^2+(i-1)*N1+j)=1;
+            
             if (i>1) && (j>1)%the input from source is independent of the heat flow
+                if t>1
+                    condM((t-1)*N1^2+(i-1)*N1+j,i2+i3+(t-2)*N+j-1)=-C(i,j,1);
+                end
                 %condM((t-1)*N1^2+(i-1)*N1+j,i2+2*i3+(t-1)*N1^2+(i-1)*N1+j)=-C(i,j,1);    %Kapazit�tenbedingung MIP
                 for cc=0:C(i,j,2)-1 %additional flow that might still be on the arc from earlier timeframes
                     if t>C(i,j,2)*step
@@ -82,6 +86,7 @@ for t=2:tn+1
         condM(i3+(t-2)*N+i,(t-2)*N+i)=1; %set coefficient of variable corresponding to wateroutput at controller i at time t-1
         for j=1:N+1
             condM(i3+(t-2)*N+i,i2+(t-1)*N1^2+(i)*N1+j)=1;
+            
             if t>step*C(i+1,j,2)
                 condM(i3+(t-2)*N+i,i2+(t-step*C(i+1,j,2)-1)*N1^2+(j-1)*N1+i+1)=-1;
             end
@@ -96,18 +101,18 @@ for t=1:tn
     end
 end
 count=0;
-for t=2:tn+1
-    for i=1:N
-        for j=1:N
-            if C(j,i,1) > 0
-                count=count+1;
-                condM(i3+2*i2+count,i2+(t-1)*(N+1)^2+j*(N+1)+i+1)=1;
-                condM(i3+2*i2+count,i3+i2+(t-2)*N+i)=-1;
-            end
-            
-        end
-    end
-end
+% for t=2:tn+1
+%     for i=1:N
+%         for j=1:N
+%             if C(j,i,1) > 0
+%                 count=count+1;
+%                 condM(i3+2*i2+count,i2+(t-1)*(N+1)^2+j*(N+1)+i+1)=1;
+%                 condM(i3+2*i2+count,i3+i2+(t-2)*N+i)=-1;
+%             end
+%             
+%         end
+%     end
+% end
 
 A=condM;
 A=[A;TM];
@@ -129,13 +134,14 @@ A=[A;V];
 %b_U=zeros(i3+i2+i2,1);
 b_U=zeros(i3+i2+i2+count,1);
 for t=1:tn+1
-    for i=1:N+1
-        for j=1:N+1
-           b_U((t-1)*(N+1)^2+(i-1)*(N+1)+j)=C(i,j,1);
-        end
+    for j=1:N+1
+       b_U((t-1)*(N+1)^2+j)=C(1,j,1);
+       b_U((t-1)*(N+1)^2+(j-1)*(N+1)+1)=C(j,1,1);
     end
 end
 b_L=zeros(size(b_U));
+b_L(1:i3)=-1000*ones(i3,1);
+b_L(i3+1:i3+i2)=-10000*ones(i2,1);
 b_L(i3+i2+1:i3+i2+i2+count)=-1*ones(i2+count,1);
 b_U=[b_U;-tempArcInhom+Tmax+Schwell];
 b_L=[b_L;-tempArcInhom];
