@@ -1,5 +1,10 @@
 # datafiles
 oFEM.zip
+/*.mat
+/*.fig
+/*.bmp
+/*.zip
+/*~
 statexn*
 matrixData*
 testEli*
