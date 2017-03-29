@@ -21,8 +21,8 @@ loader=0;
 video=1;
 eliminate=1;
 saver=1;
-scenario=2;
-xn=12;
+scenario=3;
+xn=45;
 tn=30;
 %%%%%setup
 if loader
@@ -51,15 +51,15 @@ else
             usetime=params.time/20;
             
         case 2
-            [C,G,N]=constrGraph(0.0,0.15,8);
-            params=struct('xn',[12:5:12],'tn',30:10:30,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-25*exp(-30*dot(x-xc,x-xc,1))));
+            [C,G,N]=constrGraph(0.2,0.15,8);
+            params=struct('xn',[45:5:45],'tn',30:10:30,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-25*exp(-30*dot(x-xc,x-xc,1))));
             [paramsControlled,paramsInhom]=PDEparams(2);
             arctime=params.time/30;
             usetime=params.time/20;
             
         case 3
             [C,G,N]=constrGraph(0.3,0.15,9);
-            params=struct('xn',22,'tn',30,'Tmax',2,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-30*exp(-50*dot(x-xc,x-xc,1))));
+            params=struct('xn',45,'tn',30,'Tmax',2,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-30*exp(-50*dot(x-xc,x-xc,1))));
             [paramsControlled,paramsInhom]=PDEparams(3);
             arctime=params.time/30;
             usetime=params.time/15;
@@ -93,8 +93,8 @@ else
             %
             g=@(x,y) 0.3+1.2*((x-1)^2 +(y-1)^2<0.4);
             u= @(x,y,xc,yc) -25*exp(-30*((x-xc)^2+(y-yc)^2));
-            runVertex(i1,i2,i3,xn,tn,dx,dt,N,u,G,-0.01,-0.01,  C,g,params.Tmax,params.Schwell,0,0,0,0,0.02,slowdown);
-            %runEliminationVertex(i1,i2,i3,xn,tn,dx,dt,params.N,params.u,G,C,params.Tmax,params.Schwell,slowdown,1,video,paramsControlled,paramsInhom);
+            %runVertex(i1,i2,i3,xn,tn,dx,dt,N,u,G,-0.01,-0.01,  C,g,params.Tmax,params.Schwell,0,0,0,0,0.02,slowdown);
+            runEliminationVertex(i1,i2,i3,xn,tn,dx,dt,params.N,params.u,G,C,params.Tmax,params.Schwell,slowdown,1,video,paramsControlled,paramsInhom);
         end
     end
 end

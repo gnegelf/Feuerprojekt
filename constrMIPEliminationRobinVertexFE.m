@@ -100,7 +100,7 @@ for t=1:tn
         condM(i3+i2+(t-1)*N+i,i3+i2+(t-1)*N+i)=-1;
     end
 end
-count=0;
+%count=0;
 % for t=2:tn+1
 %     for i=1:N
 %         for j=1:N
@@ -132,7 +132,8 @@ A=[A;V];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Calculate b_L and b_U
 %b_U=zeros(i3+i2+i2,1);
-b_U=zeros(i3+i2+i2+count,1);
+%b_U=zeros(i3+i2+i2+count,1);
+b_U=zeros(i3+i2+i2,1);
 for t=1:tn+1
     for j=1:N+1
        b_U((t-1)*(N+1)^2+j)=C(1,j,1);
@@ -142,7 +143,8 @@ end
 b_L=zeros(size(b_U));
 b_L(1:i3)=-1000*ones(i3,1);
 b_L(i3+1:i3+i2)=-10000*ones(i2,1);
-b_L(i3+i2+1:i3+i2+i2+count)=-1*ones(i2+count,1);
+%b_L(i3+i2+1:i3+i2+i2+count)=-1*ones(i2+count,1);
+b_L(i3+i2+1:i3+i2+i2)=-1*ones(i2,1);
 b_U=[b_U;-tempArcInhom+Tmax+Schwell];
 b_L=[b_L;-tempArcInhom];
 
