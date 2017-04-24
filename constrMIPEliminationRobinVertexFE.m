@@ -176,7 +176,7 @@ c=zeros(n,1);
 factors=dt*dx*dx*ones(tn1*(xn+1)^2,1);
 
 for t=1:tn1
-    if (t==1 || t=tn1)
+    if (t==1 || t==tn1)
        fact=0.5; 
     else
         fact=1;
