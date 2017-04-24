@@ -10,20 +10,21 @@ global tn;
 global loader;
 global usetime;
 global time;
+global contamination;
 addpath('~/MIPDECO/Feuerprojekt/oFEM/projects/NEODYM/heat/');
 addpath('~/MIPDECO/Feuerprojekt/oFEM/source/');
 %%%%%controls
-
+contamination=1
 global plotM;
 load('testTemp');
 
-loader=0;
+loader=1;
 video=1;
 eliminate=1;
 saver=1;
-scenario=3;
-xn=45;
-tn=30;
+scenario=5;
+xn=25;
+tn=40;
 %%%%%setup
 if loader
     load(sprintf('statexn%dtn%d.mat',xn,tn));
@@ -39,7 +40,11 @@ if loader
         fac=1;
         slowdown=dt/arctime;
         step=ceil(round(1/slowdown,2));
-        plotVideoVertex
+        if contamination
+            plotVideoContamination
+        else
+            plotVideoVertex
+        end
     end
 else
     switch scenario
@@ -52,7 +57,7 @@ else
             
         case 2
             [C,G,N]=constrGraph(0.2,0.15,8);
-            params=struct('xn',[45:5:45],'tn',30:10:30,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-25*exp(-30*dot(x-xc,x-xc,1))));
+            params=struct('xn',45:5:45,'tn',30:10:30,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-25*exp(-30*dot(x-xc,x-xc,1))));
             [paramsControlled,paramsInhom]=PDEparams(2);
             arctime=params.time/30;
             usetime=params.time/20;
@@ -70,6 +75,12 @@ else
             [paramsControlled,paramsInhom]=PDEparams(4);
             arctime=params.time/30;
             usetime=params.time/15;
+        case 5
+            [C,G,N]=constrGraph(0.2,0.15,12);
+            params=struct('xn',25:5:25,'tn',40:10:40,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-25*exp(-30*dot(x-xc,x-xc,1))));
+            [paramsControlled,paramsInhom]=PDEparams(5);
+            arctime=params.time/30;
+            usetime=params.time/20;
             
     end
     %___________________
@@ -92,7 +103,12 @@ else
             slowdown=dt/arctime;
             %
             g=@(x,y) 0.3+1.2*((x-1)^2 +(y-1)^2<0.4);
-            u= @(x,y,xc,yc) -25*exp(-30*((x-xc)^2+(y-yc)^2));
+            if contamination
+                u= @(x,y,xc,yc) -0.01*exp(-30*((x-xc)^2+(y-yc)^2));
+            else
+                u= @(x,y,xc,yc) -25*exp(-30*((x-xc)^2+(y-yc)^2));
+            end
+            
             %runVertex(i1,i2,i3,xn,tn,dx,dt,N,u,G,-0.01,-0.01,  C,g,params.Tmax,params.Schwell,0,0,0,0,0.02,slowdown);
             runEliminationVertex(i1,i2,i3,xn,tn,dx,dt,params.N,params.u,G,C,params.Tmax,params.Schwell,slowdown,1,video,paramsControlled,paramsInhom);
         end

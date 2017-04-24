@@ -173,17 +173,25 @@ b_Uext2= 1000000.1*ones(size(contPos,1)*(tn+1),1);
 %construct c
 n=size(A,2);
 c=zeros(n,1);
-c(1:i2)=dt*dx*dx*solBasis'*ones(tn1*(xn+1)^2,1);
+factors=dt*dx*dx*ones(tn1*(xn+1)^2,1);
+
 for t=1:tn1
+    if (t==1 || t=tn1)
+       fact=0.5; 
+    else
+        fact=1;
+    end
     for i=[1,xn+1]
         for j=1:xn+1
             if (j==1 || j==xn+1)
-               c((t-1)*(xn+1)^2+(i-1)*(xn+1)+j)=dt*dx*dx*0.25; 
+               factors((t-1)*(xn+1)^2+(i-1)*(xn+1)+j)=dt*dx*dx*0.25*fact; 
             else
-                c((t-1)*(xn+1)^2+(i-1)*(xn+1)+j)=dt*dx*dx*0.5;
-                c((t-1)*(xn+1)^2+(j-1)*(xn+1)+i)=dt*dx*dx*0.5;
+                factors((t-1)*(xn+1)^2+(i-1)*(xn+1)+j)=dt*dx*dx*0.5*fact;
+                factors((t-1)*(xn+1)^2+(j-1)*(xn+1)+i)=dt*dx*dx*0.5*fact;
             end
         end
     end
+end
+c(1:i2)=solBasis'*factors;
 
 end
