@@ -14,32 +14,33 @@ addpath('~/MIPDECO/Feuerprojekt/oFEM/projects/NEODYM/heat/');
 addpath('~/MIPDECO/Feuerprojekt/oFEM/source/');
 %%%%%controls
 
-global plotM;
-load('testTemp');
-
+finiteDifferences=1;
+loadedSolutionFD=0;
 loader=0;
 video=1;
 eliminate=1;
 saver=1;
-scenario=3;
+scenario=2;
 xn=45;
 tn=30;
 %%%%%setup
 if loader
-    load(sprintf('statexn%dtn%d.mat',xn,tn));
-    load(sprintf('matrixData%d_%d.mat',xn,tn));
-    xn1=xn+1;
-    tn1=tn+1;
-    if video
-        dx=1/xn;
-        dt=1/tn;
-        x_k=x_k';
-        %x_k=Result.x_k;
-        x_kEli=x_k;
-        fac=1;
-        slowdown=dt/arctime;
-        step=ceil(round(1/slowdown,2));
-        plotVideoVertex
+    if ~finiteDifferences
+        load(sprintf('statexn%dtn%d.mat',xn,tn));
+        load(sprintf('matrixData%d_%d.mat',xn,tn));
+        xn1=xn+1;
+        tn1=tn+1;
+        if video
+            dx=1/xn;
+            dt=1/tn;
+            x_k=x_k';
+            %x_k=Result.x_k;
+            x_kEli=x_k;
+            fac=1;
+            slowdown=dt/arctime;
+            step=ceil(round(1/slowdown,2));
+            plotVideoVertex
+        end
     end
 else
     switch scenario
@@ -52,7 +53,7 @@ else
             
         case 2
             [C,G,N]=constrGraph(0.2,0.15,8);
-            params=struct('xn',[45:5:45],'tn',30:10:30,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-25*exp(-30*dot(x-xc,x-xc,1))));
+            params=struct('xn',15:5:15,'tn',50:10:60,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-25*exp(-30*dot(x-xc,x-xc,1))));
             [paramsControlled,paramsInhom]=PDEparams(2);
             arctime=params.time/30;
             usetime=params.time/20;
@@ -93,8 +94,11 @@ else
             %
             g=@(x,y) 0.3+1.2*((x-1)^2 +(y-1)^2<0.4);
             u= @(x,y,xc,yc) -25*exp(-30*((x-xc)^2+(y-yc)^2));
-            %runVertex(i1,i2,i3,xn,tn,dx,dt,N,u,G,-0.01,-0.01,  C,g,params.Tmax,params.Schwell,0,0,0,0,0.02,slowdown);
-            runEliminationVertex(i1,i2,i3,xn,tn,dx,dt,params.N,params.u,G,C,params.Tmax,params.Schwell,slowdown,1,video,paramsControlled,paramsInhom);
+            if finiteDifferences
+                runVertex(i1,i2,i3,xn,tn,dx,dt,N,u,G,-0.01,-0.01,  C,g,params.Tmax,params.Schwell,0,0,0,0,0.02,slowdown,loadedSolutionFD);
+            else
+                runEliminationVertex(i1,i2,i3,xn,tn,dx,dt,params.N,params.u,G,C,params.Tmax,params.Schwell,slowdown,1,video,paramsControlled,paramsInhom);
+            end
         end
     end
 end

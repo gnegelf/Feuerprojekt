@@ -1,4 +1,4 @@
-function [ ] = runVertex(i1,i2,i3,xn,tn,dx,dt,N,u,G,a1,a2,C,g,Tmax,Schwell,hL,hR,hU,hO,D,slowdown)
+function [ ] = runVertex(i1,i2,i3,xn,tn,dx,dt,N,u,G,a1,a2,C,g,Tmax,Schwell,hL,hR,hU,hO,D,slowdown,loadedSolution)
 %%%This File runs the fire Model with linear heat equation, without
 %%%eliminating the PDE it is a cleaned up version of the previous trials
 %Lineare PDE, lineare Abh�ngigkeit vom Controller, Zus�tzliche Netzwerk
@@ -8,7 +8,8 @@ fac=1;
 C(:,:,1)=C(:,:,1)*fac;
 step=ceil(round(1/slowdown,2));
 global usetime;
-if 0
+
+if ~loadedSolution
     [A,b_U,b_L,c]=  constrANoElimination(i1,i2,i3, xn,tn,dx,dt,N,u,G,a1,a2,step,C,g,Tmax,Schwell,hL,hR,hU,hO,D);
     [m,n]=size(A);
     intVarN=i2;
