@@ -2,7 +2,6 @@ times=30:10:60;
 spaces=10:5:45;
 durations=zeros(length(10:5:45),length(30:10:60));
 i=1;
-j=1;
 legendList=strings(0);
 for xn=10:5:45
     j=1;
@@ -16,54 +15,56 @@ end
 
 figure
 for i=1:4
-    pp=plot(10:5:45,durations(:,i));
+    pp=plot(10:5:45,durations(:,i),'LineWidth',3);
+    set(gca,'FontSize',15)
     axis([10 45 0 20000]);
     xlabel('Spacial discritization coursety');
     ylabel('Computation time in s');
-    legendList=[legendList; sprintf('elimination, tn=%d',times(i))];
+    legendList=[legendList; sprintf('With Callback, tn=%d',times(i))];
     %clabel('Hallo');
     hold on;
 end
-savefig('eliminiationModel3');
+save('durationsLazy','durations');
 legend(legendList);
 legendList=strings(0);
-
+savefig('eliminationFigure');
+timeArray=zeros(length(10:5:45)*length(30:10:60),2);
+timeArray(:,1)=reshape(durations,[length(10:5:45)*length(30:10:60),1]);
 durations=20000*ones(length(10:5:45),length(30:10:60));
 i=1;
 j=1;
 for xn=10:5:45
     j=1;
     for tn=30:10:60
-        if (tn<45 || (tn==50 && xn<42) || (tn==60 && xn < 31))
             load(sprintf('stateFullxn%dtn%d.mat',xn,tn));
-            durations(i,j)=duration;
-        end
-        
+            durations(i,j)=duration;      
         j=j+1;
     end
     i=i+1;
 end
-
+timeArray(:,2)=reshape(durations,[length(10:5:45)*length(30:10:60),1]);
 
 
 figure
 for i=1:4
-    plot(10:5:45,durations(:,i))
+    plot(10:5:45,durations(:,i),'LineWidth',3)
+    set(gca,'FontSize',15)
     axis([10 45 0 20000]);
     xlabel('Spacial discritization coursety');
     ylabel('Computation time in s');
-    legendList=[legendList; sprintf('full, tn=%d',times(i))];
+    legendList=[legendList; sprintf('No Callback, tn=%d',times(i))];
     legend(legendList);
     hold on;
 end
-clear variables;
 
-savefig('fullModel3');
+savefig('fullFigure');
+save('zeiten','timeArray');
+save('durationsFull','durations');
 % 
 % figure
 % plot([0,1],[0,1]);
 % hold on;
-% plot([0,1],[0.5,0.5]);
+% plot([0,1],[0.5,0.5]);length(10:5:45),length(30:10:60)
 % hold on;
 % axis([0,1,0,1]);
 % xlabel('x');
