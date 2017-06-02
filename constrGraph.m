@@ -127,7 +127,25 @@ switch choice
         end
         C(:,:,2)=ones(N+1,N+1);
         contPos=[0.1,0.5; 0.25,0.2; 0.4,0.2; 0.6,0.2; 0.75,0.2; 0.25,0.4; 0.4,0.4; 0.6,0.4; 0.75,0.4; 0.25,0.6; 0.4,0.6; 0.6,0.6; 0.75,0.6; 0.25,0.8; 0.4,0.8; 0.6,0.8; 0.75,0.8; 0.9,0.5];
-
+    case 11
+        N=36;
+        Ns=sqrt(N);
+        C=zeros(N+1,N+1,2);
+        contPos=zeros(N,2);
+        for i=1:Ns
+            for j=1:Ns
+                contPos((i-1)*Ns+j,1)=i/(Ns+1);
+                contPos((i-1)*Ns+j,2)=j/(Ns+1);
+            end
+        end
+    case 12
+        N=36;
+        C=zeros(N+1,N+1,2);
+        contPos=zeros(N,2);
+        for i=1:N
+                contPos(i,1)=0.1;
+                contPos(i,2)=i/(N+1);
+        end
 end
     
         

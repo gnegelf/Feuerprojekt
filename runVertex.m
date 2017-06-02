@@ -8,13 +8,14 @@ fac=1;
 C(:,:,1)=C(:,:,1)*fac;
 step=ceil(round(1/slowdown,2));
 global usetime;
+global scenario;
 
 if ~loadedSolution
     [A,b_U,b_L,c]=  constrANoElimination(i1,i2,i3, xn,tn,dx,dt,N,u,G,a1,a2,step,C,g,Tmax,Schwell,hL,hR,hU,hO,D);
     [m,n]=size(A);
     intVarN=i2;
     contVarN=n-intVarN;
-    saveName=sprintf('matrixData%d_%d.mat',xn,tn);
+    saveName=sprintf('matrixData%d_%d_%d.mat',xn,tn,scenario);
     save(saveName,'A','b_U','b_L','c','-append');
     saveName=sprintf('~/python/feuerDataNoElimination%d_%d.mat',xn,tn);
     save(saveName,'A','b_U','b_L','xn','tn','intVarN','contVarN','c');

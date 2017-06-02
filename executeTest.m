@@ -10,24 +10,28 @@ global tn;
 global loader;
 global usetime;
 global time;
+global contamination;
+global scenario;
 addpath('~/MIPDECO/Feuerprojekt/oFEM/projects/NEODYM/heat/');
 addpath('~/MIPDECO/Feuerprojekt/oFEM/source/');
 %%%%%controls
-
-finiteDifferences=1;
+finiteDifferences=0;
 loadedSolutionFD=0;
+contamination=0
+global plotM;
+
 loader=0;
 video=1;
 eliminate=1;
 saver=1;
 scenario=2;
-xn=45;
+xn=10;
 tn=30;
 %%%%%setup
 if loader
     if ~finiteDifferences
-        load(sprintf('statexn%dtn%d.mat',xn,tn));
-        load(sprintf('matrixData%d_%d.mat',xn,tn));
+        load(sprintf('statexn%dtn%d_%d.mat',xn,tn,scenario));
+        load(sprintf('matrixData%d_%d_%d.mat',xn,tn,scenario));
         xn1=xn+1;
         tn1=tn+1;
         if video
@@ -39,7 +43,11 @@ if loader
             fac=1;
             slowdown=dt/arctime;
             step=ceil(round(1/slowdown,2));
-            plotVideoVertex
+            if contamination
+                plotVideoContamination
+            else
+                plotVideoVertex
+            end
         end
     end
 else
@@ -53,7 +61,7 @@ else
             
         case 2
             [C,G,N]=constrGraph(0.2,0.15,8);
-            params=struct('xn',15:5:15,'tn',50:10:60,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-25*exp(-30*dot(x-xc,x-xc,1))));
+            params=struct('xn',30:5:45,'tn',30:10:60,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-25*exp(-30*dot(x-xc,x-xc,1))));
             [paramsControlled,paramsInhom]=PDEparams(2);
             arctime=params.time/30;
             usetime=params.time/20;
@@ -71,6 +79,12 @@ else
             [paramsControlled,paramsInhom]=PDEparams(4);
             arctime=params.time/30;
             usetime=params.time/15;
+        case 5
+            [C,G,N]=constrGraph(0.2,0.15,12);
+            params=struct('xn',25:5:25,'tn',40:10:40,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-25*exp(-30*dot(x-xc,x-xc,1))));
+            [paramsControlled,paramsInhom]=PDEparams(5);
+            arctime=params.time/30;
+            usetime=params.time/20;
             
     end
     %___________________
@@ -83,7 +97,7 @@ else
     time=params.time; %the time the water has an effect.
     for xn=params.xn
         for tn=params.tn
-            save(sprintf('matrixData%d_%d.mat',xn,tn),'params','paramsControlled','paramsInhom','arctime','usetime','C','G','N');
+            save(sprintf('matrixData%d_%d_%d.mat',xn,tn,scenario),'params','paramsControlled','paramsInhom','arctime','usetime','C','G','N');
             dt=time/tn;
             dx=1/xn;
             dy=dx;
@@ -91,14 +105,18 @@ else
             i2=(tn)*N;
             i3=(tn+1)*(N+1)^2;
             slowdown=dt/arctime;
-            %
             g=@(x,y) 0.3+1.2*((x-1)^2 +(y-1)^2<0.4);
-            u= @(x,y,xc,yc) -25*exp(-30*((x-xc)^2+(y-yc)^2));
+            if contamination
+                u= @(x,y,xc,yc) -0.01*exp(-30*((x-xc)^2+(y-yc)^2));
+            else
+                u= @(x,y,xc,yc) -25*exp(-30*((x-xc)^2+(y-yc)^2));
+            end
             if finiteDifferences
                 runVertex(i1,i2,i3,xn,tn,dx,dt,N,u,G,-0.01,-0.01,  C,g,params.Tmax,params.Schwell,0,0,0,0,0.02,slowdown,loadedSolutionFD);
             else
                 runEliminationVertex(i1,i2,i3,xn,tn,dx,dt,params.N,params.u,G,C,params.Tmax,params.Schwell,slowdown,1,video,paramsControlled,paramsInhom);
             end
+            
         end
     end
 end
