@@ -30,8 +30,8 @@ tn=30;
 %%%%%setup
 if loader
     if ~finiteDifferences
-        load(sprintf('statexn%dtn%d_%d.mat',xn,tn,scenario));
-        load(sprintf('matrixData%d_%d_%d.mat',xn,tn,scenario));
+        load(sprintf('data/statexn%dtn%d_%d.mat',xn,tn,scenario));
+        load(sprintf('data/matrixData%d_%d_%d.mat',xn,tn,scenario));
         xn1=xn+1;
         tn1=tn+1;
         if video
@@ -61,7 +61,7 @@ else
             
         case 2
             [C,G,N]=constrGraph(0.2,0.15,8);
-            params=struct('xn',30:5:45,'tn',30:10:60,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-25*exp(-30*dot(x-xc,x-xc,1))));
+            params=struct('xn',10:5:10,'tn',30:10:60,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-25*exp(-30*dot(x-xc,x-xc,1))));
             [paramsControlled,paramsInhom]=PDEparams(2);
             arctime=params.time/30;
             usetime=params.time/20;
@@ -97,7 +97,7 @@ else
     time=params.time; %the time the water has an effect.
     for xn=params.xn
         for tn=params.tn
-            save(sprintf('matrixData%d_%d_%d.mat',xn,tn,scenario),'params','paramsControlled','paramsInhom','arctime','usetime','C','G','N');
+            save(sprintf('data/matrixData%d_%d_%d.mat',xn,tn,scenario),'params','paramsControlled','paramsInhom','arctime','usetime','C','G','N');
             dt=time/tn;
             dx=1/xn;
             dy=dx;

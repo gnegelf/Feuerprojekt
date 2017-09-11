@@ -94,15 +94,13 @@ for t=2:tn+1
         end
     end
 end
-global plotM;
 b=zeros(i4,1);
 for t=1:tn+1
     if t==1
         for k=2:xn+2
             for j=2:xn+2
 
-                b((t-1)*(xn1)^2+(j-1)*(xn1)+k)=plotM(j-1,k-1,1);
-                %b((t-1)*(xn1)^2+(j-1)*(xn1)+k)=g(dx*(j-2),dx*(k-2));
+                b((t-1)*(xn1)^2+(j-1)*(xn1)+k)=g(dx*(j-2),dx*(k-2));
             end
         end
     else

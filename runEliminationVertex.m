@@ -17,8 +17,8 @@ global usetime;
 global scenario;
 %C(:,:,1)=C(:,:,1)/step;
 if loader
-    load(sprintf('statexn%dtn%d_%d.mat',xn,tn,scenario));
-    load(sprintf('matrixData%d_%d_%d.mat',xn,tn,scenario));
+    load(sprintf('data/statexn%dtn%d_%d.mat',xn,tn,scenario));
+    load(sprintf('data/matrixData%d_%d_%d.mat',xn,tn,scenario));
 else
     if contamination
         usetime=dt;
@@ -52,7 +52,7 @@ else
     A2=[A;A_ext2];
     b_U2=[b_U;b_Uext2];
     b_L2=[b_L;b_Lext2];
-    saveName=sprintf('matrixData%d_%d_%d.mat',xn,tn,scenario);
+    saveName=sprintf('data/matrixData%d_%d_%d.mat',xn,tn,scenario);
     save(saveName,'A','b_U','b_L','c','solInhom','solBasis','-append');
     saveName=sprintf('~/python/feuerData%d_%d_%d.mat',xn,tn,scenario);
     save(saveName,'A2','Aext','b_Uext','b_Lext','xn','tn','intVarN','contVarN','b_U2','b_L2','c','Afull','b_Ufull','b_Lfull')
