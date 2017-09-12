@@ -2,7 +2,7 @@ slow=5;
 
 
 %z=solInhom;
-if eliminate
+if ~finiteDifferences
     z=solBasis*x_k(1:i2)+solInhom;
     plotM=reshape(z,[xn1,xn1,tn1]);
     plotMEli=plotM;
@@ -119,12 +119,12 @@ for j = 1:loops
         plot(Graph(:,1),Graph(:,2),'o','MarkerEdgeColor',[0 0 0],'MarkerFaceColor',[0 0 0],'MarkerSize',4);
         for i=1:N
             if j > 1
-                val=0;
-                for k=0:useStepAmount-1
-                    if(j-1-k)>0
-                        val=val+extractMatrix(i,j-1-k);
-                    end
-                end
+                val=extractMatrix(i,j-1);
+                %for k=0:useStepAmount-1
+                %    if(j-1-k)>0
+                %        val=val+extractMatrix(i,j-1-k);
+                %    end
+                %end
                 if val>0
                     plot(Graph(i,1),Graph(i,2),'d','MarkerEdgeColor',[1 0 0],'MarkerFaceColor',[1 0 0],'MarkerSize',stredge3*val);%wasserausguss
                 end

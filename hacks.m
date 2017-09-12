@@ -7,7 +7,7 @@ for xn=10:5:45
     j=1;
     for tn=30:10:60
         load(sprintf('statexn%dtn%d.mat',xn,tn));
-        durations(i,j)=duration;
+        durations(i,j)=eval(sprintf('duration',xn));
         j=j+1;
     end
     i=i+1;
@@ -60,7 +60,6 @@ for i=1:4
     hold on;
 end
 legend(legendList,'FontSize',17,'Location','southeast');
-savefig('fullFigure');
 
 %saveas(fig,'figureReducedModel.png');
 print -depsc figureReducedModel;
