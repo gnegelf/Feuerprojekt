@@ -8,7 +8,6 @@ tn1=tn+1;
 i4=(xn+1)^2*(tn+1);
 N1=N+1;
 contBasis=zeros(i4,N); %Anzahl der Controller
-global usetime;
 global time;
 gridPoints=zeros((xn+1)^2,2);
 for yy=0:xn
@@ -25,9 +24,10 @@ zet=zeros(i4,N);
 zet2=zeros(size(contPos,1)*(tn+1),N);
 gridParams=struct('LL',[0,0],'UR',[1,1],'h_max',1/20);
 
+T_ints=zeros(N,tn);
 for i=1:N
    %u=@(x) ofem.matrixarray(-10*exp(-50*dot(x-contPos(i,:)',x-contPos(i,:)',1)));
-   T_xt=heatRobin(gridPoints,0:dt:time,@(x) u(x,contPos(i,:)'),@(x) ofem.matrixarray(0+0*x(1,1,:)),paramsControlled,gridParams);
+   [T_xt,T_ints(i,:)]=heatRobinNew(gridPoints,0:dt:time,@(x) u(x,contPos(i,:)'),@(x) ofem.matrixarray(0+0*x(1,1,:)),paramsControlled,gridParams);
    %Eliminate boundary conditions!
    store=reshape(T_xt(1:(xn+1)^2,:),(xn+1)^2*size(T_xt,2),1);
    zet2(:,i)=reshape(T_xt((xn+1)^2+1:size(T_xt,1),:),size(contPos,1)*size(T_xt,2),1);
@@ -186,5 +186,11 @@ for t=1:tn1
     end
 end
 c(1:i2)=solBasis'*factors;
-
+c2=zeros(i2,1);
+for t=1:tn
+   for i=1:N
+       c2((t-1)*N+i)=sum(T_ints(i,1:tn+1-t));
+   end
+end
+c(1:i2)=c2;
 end
