@@ -1,42 +1,49 @@
 legendList=strings(0);
-timeArray=zeros(length(10:5:45)*length(30:10:60),2);
-timeArray(:,1)=reshape(durations,[length(10:5:45)*length(30:10:60),1]);
-durations=20000*ones(length(10:5:45),length(30:10:60));
+%timeArray=zeros(length(10:5:45)*length(30:10:60),2);
+space=[10:1:15,20:5:45];
+durations=20000*ones(length(space),length(30:10:60));
+%timeArray(:,1)=reshape(durations,[length(10:5:45)*length(30:10:60),1]);
+times=[30,40,50,60];
 i=1;
 j=1;
-for xn=10:5:10
+for xn=10:1:12
     j=1;
-    if xn==10
-        for tn=30:10:60
-                load(sprintf('stateNoElixn%dtn%d.mat',xn,tn));
-                durations(i,j)=duration;      
-            j=j+1;
-        end
-        i=i+1;
-    else
-        for tn=30:10:30
-                load(sprintf('stateNoElixn%dtn%d.mat',xn,tn));
-                durations(i,j)=duration;      
-            j=j+1;
-        end
-        i=i+1;
+    for tn=30:10:60
+            load(sprintf('stateNoElixn%dtn%d.mat',xn,tn));
+            durations(i,j)=duration;      
+        j=j+1;
     end
+    i=i+1;
 end
-timeArray(:,2)=reshape(durations,[length(10:5:45)*length(30:10:60),1]);
+j=1;
+for tn=[30,40,50,60]
+    if tn ~= 50
+            load(sprintf('stateNoElixn%dtn%d.mat',13,tn));
+            durations(i,j)=duration; 
+    end
+        j=j+1;
+end
+i=i+1;
+j=4;
+load(sprintf('stateNoElixn%dtn%d.mat',14,60));
+durations(i,j)=duration;      
+%timeArray(:,2)=reshape(durations,[length(10:5:45)*length(30:10:60),1]);
 
 
-figure
+fig=figure
 for i=1:4
-    plot(10:5:45,durations(:,i),'LineWidth',3)
-    set(gca,'FontSize',15)
-    axis([10 45 0 20000]);
-    xlabel('Spacial discritization coursety');
-    ylabel('Computation time in s');
+    semilogy(space,durations(:,i),'LineWidth',3)
+    set(gca,'FontSize',18)
+    axis([10 45 600 20000]);
+    xlabel('Spacial discretization resolution','FontSize',22);
+    ylabel('Computation time in s','FontSize',22);
     legendList=[legendList; sprintf('Finite Differences, tn=%d',times(i))];
-    legend(legendList);
     hold on;
 end
-savefig('noEliFigure');
+axis([10 45 600 20000]);
+legend(legendList,'FontSize',17,'Location','southeast');
+%saveas(fig,'figureFiniteDifferences.eps');
+print -depsc figureFiniteDifferences;
 save('durationsNoEli','durations');
 % 
 % figure

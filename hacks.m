@@ -13,21 +13,24 @@ for xn=10:5:45
     i=i+1;
 end
 
-figure
+figure 
 for i=1:4
-    pp=plot(10:5:45,durations(:,i),'LineWidth',3);
-    set(gca,'FontSize',15)
-    axis([10 45 0 20000]);
-    xlabel('Spacial discritization coursety');
-    ylabel('Computation time in s');
+    pp=semilogy(10:5:45,durations(:,i),'LineWidth',3);
+    set(gca,'FontSize',18)
+    axis([10 45 1 20000]);
+    xlabel('Spacial discritization resolution','FontSize',22);
+    ylabel('Computation time in s','FontSize',22);
     legendList=[legendList; sprintf('With Callback, tn=%d',times(i))];
     %clabel('Hallo');
     hold on;
 end
 save('durationsLazy','durations');
-legend(legendList);
+legend(legendList,'FontSize',17,'Location','southeast');
 legendList=strings(0);
+
 savefig('eliminationFigure');
+print -depsc figureReducedModelCB;
+%print -png figureReducedModelCB;
 timeArray=zeros(length(10:5:45)*length(30:10:60),2);
 timeArray(:,1)=reshape(durations,[length(10:5:45)*length(30:10:60),1]);
 durations=20000*ones(length(10:5:45),length(30:10:60));
@@ -45,19 +48,22 @@ end
 timeArray(:,2)=reshape(durations,[length(10:5:45)*length(30:10:60),1]);
 
 
-figure
+fig = figure
 for i=1:4
-    plot(10:5:45,durations(:,i),'LineWidth',3)
-    set(gca,'FontSize',15)
-    axis([10 45 0 20000]);
-    xlabel('Spacial discritization coursety');
-    ylabel('Computation time in s');
-    legendList=[legendList; sprintf('No Callback, tn=%d',times(i))];
-    legend(legendList);
+    semilogy(10:5:45,durations(:,i),'LineWidth',3)
+    set(gca,'FontSize',18)
+    axis([10 45 1 20000]);
+    xlabel('Spacial discretization resolution','FontSize',22);
+    ylabel('Computation time in s','FontSize',22);
+    legendList=[legendList; sprintf('Finite Elements, tn=%d',times(i))];
+    
     hold on;
 end
+legend(legendList,'FontSize',17,'Location','southeast');
 
-savefig('fullFigure');
+%saveas(fig,'figureReducedModel.png');
+print -depsc figureReducedModel;
+%print -png figureReducedModel;
 save('zeiten','timeArray');
 save('durationsFull','durations');
 % 

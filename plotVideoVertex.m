@@ -141,7 +141,7 @@ for j = 1:loops
     
 end
 %movie(G,1,40);
-str1=sprintf('testEli:%d-x:%d-t:%d',eliminate,xn,tn);
+str1=sprintf('testEli%d-x%d-t%d.mp4',eliminate,xn,tn);
 v=VideoWriter(str1);
 open(v);
 writeVideo(v,F);
