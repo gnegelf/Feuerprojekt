@@ -26,7 +26,7 @@ else
          [m,n]=size(A);
         intVarN=N;
     else        
-        [A,b_U,b_L,c,solInhom,solBasis,Aext,b_Uext,b_Lext,A_ext2,b_Uext2,b_Lext2]= constrMIPEliminationRobinVertexFE(i1,i2,i3 ,xn,tn,dx,dt,N,u,G,step,C,Tmax,Schwell,p1,p2);
+        [A,b_U,b_L,c,solInhom,solBasis,Aext,b_Uext,b_Lext,A_ext2,b_Uext2,b_Lext2]= constrMIPEliminationRobinVertexFECONT(i1,i2,i3 ,xn,tn,dx,dt,N,u,G,step,C,Tmax,Schwell,p1,p2);
         [m,n]=size(A);
         intVarN=i2;
     end
@@ -54,7 +54,7 @@ else
     b_L2=[b_L;b_Lext2];
     saveName=sprintf('data/matrixData%d_%d_%d.mat',xn,tn,scenario);
     save(saveName,'A','b_U','b_L','c','solInhom','solBasis','-append');
-    saveName=sprintf('~/python/feuerData%d_%d_%d.mat',xn,tn,scenario);
+    saveName=sprintf('~/python/data/feuerData%d_%d_%d.mat',xn,tn,scenario);
     save(saveName,'A2','Aext','b_Uext','b_Lext','xn','tn','intVarN','contVarN','b_U2','b_L2','c','Afull','b_Ufull','b_Lfull')
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

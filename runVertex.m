@@ -17,13 +17,13 @@ if ~loadedSolution
     contVarN=n-intVarN;
     saveName=sprintf('data/matrixData%d_%d_%d.mat',xn,tn,scenario);
     save(saveName,'A','b_U','b_L','c','-append');
-    saveName=sprintf('~/python/feuerDataNoElimination%d_%d_%d.mat',xn,tn,scenario);
+    saveName=sprintf('~/python/data/feuerDataNoElimination%d_%d_%d.mat',xn,tn,scenario);
     save(saveName,'A','b_U','b_L','xn','tn','intVarN','contVarN','c');
 else
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %count=100000;
     video=1;
-    loadName=sprintf('Results/FeuerprojektstateNoElixn10tn30.mat',xn,tn);
+    loadName=sprintf('Results/FeuerprojektstateNoElixn%dtn%ds%d.mat',xn,tn,scenario);
     load(loadName);
     xn1=xn+1;
     tn1=tn+1;

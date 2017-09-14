@@ -30,7 +30,7 @@ tn=30;
 %%%%%setup
 if loader
     if ~finiteDifferences
-        load(sprintf('data/statexn%dtn%d_%d.mat',xn,tn,scenario));
+        load(sprintf('Results/statexn%dtn%ds%d.mat',xn,tn,scenario));
         load(sprintf('data/matrixData%d_%d_%d.mat',xn,tn,scenario));
         xn1=xn+1;
         tn1=tn+1;
@@ -61,7 +61,7 @@ else
             
         case 2
             [C,G,N]=constrGraph(0.2,0.15,8);
-            params=struct('xn',10:10:40,'tn',30:10:30,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-25*exp(-30*dot(x-xc,x-xc,1))));
+            params=struct('xn',35:10:35,'tn',30:10:30,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-25*exp(-30*dot(x-xc,x-xc,1))));
             [paramsControlled,paramsInhom]=PDEparams(2);
             arctime=params.time/30;
             usetime=params.time/20;
