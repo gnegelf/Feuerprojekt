@@ -55,7 +55,7 @@ else
     saveName=sprintf('data/matrixData%d_%d_%d.mat',xn,tn,scenario);
     save(saveName,'A','b_U','b_L','c','solInhom','solBasis','-append');
     saveName=sprintf('~/python/data/feuerData%d_%d_%d.mat',xn,tn,scenario);
-    save(saveName,'A2','Aext','b_Uext','b_Lext','xn','tn','intVarN','contVarN','b_U2','b_L2','c','Afull','b_Ufull','b_Lfull')
+    save(saveName,'A2','-v7.3','Aext','b_Uext','b_Lext','xn','tn','intVarN','contVarN','b_U2','b_L2','c','Afull','b_Ufull','b_Lfull')
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %count=100000;
