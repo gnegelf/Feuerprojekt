@@ -1,4 +1,4 @@
-function [ A,b_U,b_L,c,solInhom,solBasis,Aext,b_Uext,b_Lext,Aext2,b_Uext2,b_Lext2] = constrMIPEliminationRobinVertexFE(i1,i2,i3, xn,tn,dx,dt,N,u,contPos,step,C,Tmax,Schwell,p1,p2)
+function [ A,b_U,b_L,c,solInhom,solBasis,Aext,b_Uext,b_Lext,Aext2,b_Uext2,b_Lext2] = constrMIPEliminationRobinVertexFECONT(i1,i2,i3, xn,tn,dx,dt,N,u,contPos,step,C,Tmax,Schwell,p1,p2)
 %This function uses diriclet boundary conditions, which might be
 %inappropriate
 paramsControlled=p1;

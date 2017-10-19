@@ -11,19 +11,22 @@ global usetime;
 global scenario;
 
 if ~loadedSolution
-    [A,b_U,b_L,c]=  constrANoElimination(i1,i2,i3, xn,tn,dx,dt,N,u,G,a1,a2,step,C,g,Tmax,Schwell,hL,hR,hU,hO,D);
+    [A,b_U,b_L,c]=  constrANoEliminationCONT(i1,i2,i3, xn,tn,dx,dt,N,u,G,a1,a2,step,C,g,Tmax,Schwell,hL,hR,hU,hO,D);
     [m,n]=size(A);
     intVarN=i2;
     contVarN=n-intVarN;
+    initial=zeros(size(A,2),1);
+    leni=(xn+3)^2*(tn+1);
+    initial(1:leni)=A(1:leni,1:leni)\b_U(1:leni);
     saveName=sprintf('data/matrixData%d_%d_%d.mat',xn,tn,scenario);
     save(saveName,'A','b_U','b_L','c','-append');
     saveName=sprintf('~/python/data/feuerDataNoElimination%d_%d_%d.mat',xn,tn,scenario);
-    save(saveName,'A','b_U','b_L','xn','tn','intVarN','contVarN','c');
+    save(saveName,'A','b_U','b_L','xn','tn','intVarN','contVarN','c','initial');
 else
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %count=100000;
     video=1;
-    loadName=sprintf('Results/FeuerprojektstateNoElixn%dtn%ds%d.mat',xn,tn,scenario);
+    loadName=sprintf('Results/stateNoElixn%dtn%ds%d.mat',xn,tn,scenario);
     load(loadName);
     xn1=xn+1;
     tn1=tn+1;
