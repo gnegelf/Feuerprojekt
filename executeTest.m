@@ -17,27 +17,33 @@ addpath('~/MIPDECO/Feuerprojekt/oFEM/source/');
 %%%%%controls
 finiteDifferences=0;
 loadedSolutionFD=0;
-contamination=0
+contamination=1
 global plotM;
 
 loader=0;
 video=1;
-eliminate=0;
+eliminate=1;
 saver=1;
-scenario=2;
+scenario=5;
 xn=10;
 tn=30;
 %%%%%setup
 if loader
     if ~finiteDifferences
-        load(sprintf('Results/statexn%dtn%ds%d.mat',xn,tn,scenario));
-        load(sprintf('data/matrixData%d_%d_%d.mat',xn,tn,scenario));
+        if ~contamination
+            load(sprintf('Results/statexn%dtn%ds%d.mat',xn,tn,scenario));
+            load(sprintf('data/matrixData%d_%d_%d.mat',xn,tn,scenario));
+        else
+            load(sprintf('Results/contaStatexn%dtn%ds%d.mat',xn,tn,scenario));
+            load(sprintf('data/contaMatrixData%d_%d_%d.mat',xn,tn,scenario));
+        end
         xn1=xn+1;
         tn1=tn+1;
         if video
             dx=1/xn;
             dt=1/tn;
             x_k=x_k';
+            i2=tn*N;
             %x_k=Result.x_k;
             x_kEli=x_k;
             fac=1;
@@ -46,7 +52,7 @@ if loader
             if contamination
                 plotVideoContamination
             else
-                plotVideoVertex
+                newPlot
             end
         end
     end
@@ -81,8 +87,8 @@ else
             usetime=params.time/15;
         case 5
             [C,G,N]=constrGraph(0.2,0.15,12);
-            params=struct('xn',25:5:25,'tn',40:10:40,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-25*exp(-30*dot(x-xc,x-xc,1))));
-            [paramsControlled,paramsInhom]=PDEparams(5);
+            params=struct('xn',10:5:15,'tn',60:10:60,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-exp(-30*dot(x-xc,x-xc,1))));
+            [paramsControlled,paramsInhom]=PDEparams(11);
             arctime=params.time/30;
             usetime=params.time/20;
             
@@ -97,7 +103,11 @@ else
     time=params.time; %the time the water has an effect.
     for xn=params.xn
         for tn=params.tn
-            save(sprintf('data/matrixData%d_%d_%d.mat',xn,tn,scenario),'-v7.3','params','paramsControlled','paramsInhom','arctime','usetime','C','G','N');
+            if contamination
+                save(sprintf('data/contaMatrixData%d_%d_%d.mat',xn,tn,scenario),'-v7.3','params','paramsControlled','paramsInhom','arctime','usetime','C','G','N');
+            else
+                save(sprintf('data/matrixData%d_%d_%d.mat',xn,tn,scenario),'-v7.3','params','paramsControlled','paramsInhom','arctime','usetime','C','G','N');
+            end
             dt=time/tn;
             dx=1/xn;
             dy=dx;

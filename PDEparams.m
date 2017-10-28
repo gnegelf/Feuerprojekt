@@ -25,7 +25,7 @@ switch scenario
         paramsInhom=paramsControlled;
         paramsInhom.T_a=[0.4,0.4,5.4,0.4];
     case 11
-        paramsControlled=struct('c_P',1,'rho',1,'k',0.007,'h',[1,0,1,0],'v',[-0.1;0.0],'T_a',[0,0,0,0],'initialT',@(x) ofem.matrixarray(0.5+0*x(1,1,:)));
+        paramsControlled=struct('c_P',1,'rho',1,'k',0.007,'h',[1,0,1,0],'v',[-0.1;0.0],'T_a',[0,0,0,0],'initialT',@(x) ofem.matrixarray(0.5+1.2*(x(1,1,:)>0.7)));
         paramsInhom=paramsControlled;
         paramsInhom.T_a=[0,0,5,0];
         

@@ -4,7 +4,7 @@ if eliminate
     plotM=reshape(z,[xn1,xn1,tn1]);
     plotMEli=plotM;
 else
-    plotM=reshape(Result.x_k(1:(xn+3)^2*tn1),[xn+3,xn+3,tn1]);
+    plotM=reshape(x_k(1:(xn+3)^2*tn1),[xn+3,xn+3,tn1]);
     plotM=plotM(2:xn+2,2:xn+2,:);
     plotMNoEli=plotM;
 end
