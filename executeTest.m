@@ -36,7 +36,7 @@ if loader
         tn1=tn+1;
         if video
             dx=1/xn;
-            dt=1/tn;
+            dt=params.time/tn;
             x_k=x_k';
             %x_k=Result.x_k;
             x_kEli=x_k;
