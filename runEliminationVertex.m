@@ -24,7 +24,7 @@ else
         usetime=dt;
          [A,b_U,b_L,c,solInhom,solBasis,Aext,b_Uext,b_Lext,A_ext2,b_Uext2,b_Lext2]= constrContamination(i1,i2,i3 ,xn,tn,dx,dt,N,u,G,step,C,Tmax,Schwell,p1,p2);
          [m,n]=size(A);
-        intVarN=N;
+         intVarN=N;
     else        
         [A,b_U,b_L,c,solInhom,solBasis,Aext,b_Uext,b_Lext,A_ext2,b_Uext2,b_Lext2]= constrMIPEliminationRobinVertexFECONT(i1,i2,i3 ,xn,tn,dx,dt,N,u,G,step,C,Tmax,Schwell,p1,p2);
         [m,n]=size(A);
@@ -52,10 +52,17 @@ else
     A2=[A;A_ext2];
     b_U2=[b_U;b_Uext2];
     b_L2=[b_L;b_Lext2];
-    saveName=sprintf('data/matrixData%d_%d_%d.mat',xn,tn,scenario);
-    save(saveName,'A','b_U','b_L','c','solInhom','solBasis','-append');
-    saveName=sprintf('~/python/data/feuerData%d_%d_%d.mat',xn,tn,scenario);
-    save(saveName,'A2','-v7.3','Aext','b_Uext','b_Lext','xn','tn','intVarN','contVarN','b_U2','b_L2','c','Afull','b_Ufull','b_Lfull')
+    if ~contamination
+        saveName=sprintf('data/matrixData%d_%d_%d.mat',xn,tn,scenario);
+        save(saveName,'A','b_U','b_L','c','solInhom','solBasis','-append');
+        saveName=sprintf('~/python/data/feuerData%d_%d_%d.mat',xn,tn,scenario);
+        save(saveName,'A2','-v7.3','Aext','b_Uext','b_Lext','xn','tn','intVarN','contVarN','b_U2','b_L2','c','Afull','b_Ufull','b_Lfull')
+    else
+        saveName=sprintf('data/contaMatrixData%d_%d_%d.mat',xn,tn,scenario);
+        save(saveName,'A','b_U','b_L','c','solInhom','solBasis','-append');
+        saveName=sprintf('~/python/data/contaData%d_%d_%d.mat',xn,tn,scenario);
+        save(saveName,'A2','-v7.3','Aext','b_Uext','b_Lext','xn','tn','intVarN','contVarN','b_U2','b_L2','c','Afull','b_Ufull','b_Lfull')
+    end
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %count=100000;

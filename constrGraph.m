@@ -139,12 +139,17 @@ switch choice
             end
         end
     case 12
-        N=36;
+        N=50;
+        N1=10;
+        N2=5;
+        N=N1*N2;
         C=zeros(N+1,N+1,2);
         contPos=zeros(N,2);
-        for i=1:N
-                contPos(i,1)=0.1;
-                contPos(i,2)=i/(N+1);
+        for i=1:N1
+            for j=1:N2
+                contPos((i-1)*N2+j,1)=j/(2*N2+1);
+                contPos((i-1)*N2+j,2)=i/(N1+1);
+            end
         end
 end
     
