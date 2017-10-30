@@ -3,10 +3,10 @@ spaces=10:5:45;
 durations=zeros(length(10:5:45),length(30:10:60));
 i=1;
 legendList=strings(0);
-for xn=10:5:45
+for xn=10:5:70
     j=1;
     for tn=30:10:60
-        load(sprintf('statexn%dtn%d.mat',xn,tn));
+        load(sprintf('Results/statexn%dtn%ds2.mat',xn,tn));
         durations(i,j)=eval(sprintf('duration',xn));
         j=j+1;
     end
@@ -15,10 +15,10 @@ end
 
 figure 
 for i=1:4
-    pp=semilogy(10:5:45,durations(:,i),'LineWidth',3);
+    pp=semilogy(10:5:70,durations(:,i),'LineWidth',3);
     set(gca,'FontSize',18)
-    axis([10 45 1 20000]);
-    xlabel('Spacial discritization resolution','FontSize',22);
+    axis([10 70 20 20000]);
+    xlabel('Spacial discretization resolution','FontSize',22);
     ylabel('Computation time in s','FontSize',22);
     legendList=[legendList; sprintf('With Callback, tn=%d',times(i))];
     %clabel('Hallo');
@@ -31,15 +31,14 @@ legendList=strings(0);
 savefig('eliminationFigure');
 print -depsc figureReducedModelCB;
 %print -png figureReducedModelCB;
-timeArray=zeros(length(10:5:45)*length(30:10:60),2);
-timeArray(:,1)=reshape(durations,[length(10:5:45)*length(30:10:60),1]);
+
 durations=20000*ones(length(10:5:45),length(30:10:60));
 i=1;
 j=1;
-for xn=10:5:45
+for xn=10:5:40
     j=1;
     for tn=30:10:60
-            load(sprintf('stateFullxn%dtn%d.mat',xn,tn));
+            load(sprintf('Results/stateFullxn%dtn%ds2.mat',xn,tn));
             durations(i,j)=duration;      
         j=j+1;
     end
@@ -52,7 +51,7 @@ fig = figure
 for i=1:4
     semilogy(10:5:45,durations(:,i),'LineWidth',3)
     set(gca,'FontSize',18)
-    axis([10 45 1 20000]);
+    axis([10 45 20 20000]);
     xlabel('Spacial discretization resolution','FontSize',22);
     ylabel('Computation time in s','FontSize',22);
     legendList=[legendList; sprintf('Finite Elements, tn=%d',times(i))];

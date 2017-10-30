@@ -20,13 +20,13 @@ loadedSolutionFD=0;
 contamination=1
 global plotM;
 
-loader=0;
+loader=1;
 video=1;
 eliminate=1;
 saver=1;
 scenario=5;
-xn=10;
-tn=30;
+xn=30;
+tn=60;
 %%%%%setup
 if loader
     if ~finiteDifferences
@@ -87,7 +87,7 @@ else
             usetime=params.time/15;
         case 5
             [C,G,N]=constrGraph(0.2,0.15,12);
-            params=struct('xn',10:5:15,'tn',60:10:60,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-exp(-30*dot(x-xc,x-xc,1))));
+            params=struct('xn',30:5:30,'tn',60:10:60,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-30*exp(-30*dot(x-xc,x-xc,1))));
             [paramsControlled,paramsInhom]=PDEparams(11);
             arctime=params.time/30;
             usetime=params.time/20;

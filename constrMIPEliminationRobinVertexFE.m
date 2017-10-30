@@ -7,6 +7,7 @@ xn1=xn+1;
 tn1=tn+1;
 i4=(xn+1)^2*(tn+1);
 N1=N+1;
+shub-6
 contBasis=zeros(i4,N); %Anzahl der Controller
 global usetime;
 global time;
