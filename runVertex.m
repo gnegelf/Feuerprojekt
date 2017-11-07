@@ -11,14 +11,20 @@ global usetime;
 global scenario;
 
 if ~loadedSolution
-    [A,b_U,b_L,c]=  constrANoEliminationCONT(i1,i2,i3, xn,tn,dx,dt,N,u,G,a1,a2,step,C,g,Tmax,Schwell,hL,hR,hU,hO,D);
+    [A,b_U,b_L,c]=  constrANoEliminationCONTCN(i1,i2,i3, xn,tn,dx,dt,N,u,G,a1,a2,step,C,g,Tmax,Schwell,hL,hR,hU,hO,D);
     [m,n]=size(A);
     intVarN=i2;
     contVarN=n-intVarN;
     initial=zeros(size(A,2),1);
     leni=(xn+3)^2*(tn+1);
+    squareA=A(1:leni,1:leni);
     initial(1:leni)=A(1:leni,1:leni)\b_U(1:leni);
     saveName=sprintf('data/matrixData%d_%d_%d.mat',xn,tn,scenario);
+    %wrong=1
+    %x_k=b_L;
+    %x_k(1:leni)=squareA\b_L(1:leni);
+    %saveI=sprintf('Results/stateNoElixn%dtn%ds%d.mat',xn,tn,scenario);
+    %save(saveI,'x_k');
     save(saveName,'A','b_U','b_L','c','-append');
     saveName=sprintf('~/python/data/feuerDataNoElimination%d_%d_%d.mat',xn,tn,scenario);
     save(saveName,'A','b_U','b_L','xn','tn','intVarN','contVarN','c','initial');

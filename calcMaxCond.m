@@ -10,10 +10,10 @@ for t=1:tn
     for i=2:N+1
         x=contPos(i-1,1);
         y=contPos(i-1,2);
-        xL=floor(x)+1;
-        xU=ceil(x)+1;
-        yL=floor(y)+1;
-        yU=ceil(y)+1;
+        xL=floor(x);
+        xU=ceil(x);
+        yL=floor(y);
+        yU=ceil(y);
         TM((t-1)*N+i-1,i1+i2+i3+(t-1)*N+i-1)=Tmax;
         if abs((sqrt((xL-x)^2+(yL-y)^2)+sqrt((xL-x)^2+(yU-y)^2)+sqrt((xU-x)^2+(yL-y)^2)+sqrt((xU-x)^2+(yU-y)^2)))<0.0001
             TM((t-1)*N+i-1,(t-1)*(xn+3)^2+xL*(xn+3)+yL+1)=1;
@@ -91,4 +91,4 @@ end
 %     TM((t-1)*s1+1:t*s1,ii1+ii2+ii3+(t-1)*s5+1:ii1+ii2+ii3+t*s5)=T2;
 % end
 % 
-% end
+end

@@ -15,18 +15,18 @@ global scenario;
 addpath('~/MIPDECO/Feuerprojekt/oFEM/projects/NEODYM/heat/');
 addpath('~/MIPDECO/Feuerprojekt/oFEM/source/');
 %%%%%controls
-finiteDifferences=0;
+finiteDifferences=1;
 loadedSolutionFD=0;
-contamination=1
+contamination=0
 global plotM;
 
-loader=1;
+loader=0;
 video=1;
-eliminate=1;
+eliminate=0;
 saver=1;
-scenario=5;
-xn=30;
-tn=60;
+scenario=2;
+xn=10;
+tn=30;
 %%%%%setup
 if loader
     if ~finiteDifferences
@@ -67,7 +67,7 @@ else
             
         case 2
             [C,G,N]=constrGraph(0.2,0.15,8);
-            params=struct('xn',160:5:160,'tn',30:10:30,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-25*exp(-30*dot(x-xc,x-xc,1))));
+            params=struct('xn',10:1:20,'tn',30:10:60,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-25*exp(-30*dot(x-xc,x-xc,1))));
             [paramsControlled,paramsInhom]=PDEparams(2);
             arctime=params.time/30;
             usetime=params.time/20;
@@ -122,7 +122,7 @@ else
                 u= @(x,y,xc,yc) -25*exp(-30*((x-xc)^2+(y-yc)^2));
             end
             if finiteDifferences
-                runVertex(i1,i2,i3,xn,tn,dx,dt,N,u,G,-0.01,-0.01,  C,g,params.Tmax,params.Schwell,0,0,0,0,0.02,slowdown,loadedSolutionFD);
+                runVertex(i1,i2,i3,xn,tn,dx,dt,params.N,u,G,paramsInhom.v(1),paramsInhom.v(2),  C,g,params.Tmax,params.Schwell,0.4,0.4,0.4,0.4,paramsInhom.k,slowdown,loadedSolutionFD);
             else
                 runEliminationVertex(i1,i2,i3,xn,tn,dx,dt,params.N,params.u,G,C,params.Tmax,params.Schwell,slowdown,1,video,paramsControlled,paramsInhom);
             end
