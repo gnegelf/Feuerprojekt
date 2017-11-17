@@ -15,8 +15,8 @@ global scenario;
 addpath('~/MIPDECO/Feuerprojekt/oFEM/projects/NEODYM/heat/');
 addpath('~/MIPDECO/Feuerprojekt/oFEM/source/');
 %%%%%controls
-finiteDifferences=1;
-loadedSolutionFD=1;
+finiteDifferences=0;
+loadedSolutionFD=0;
 contamination=1
 global plotM;
 
