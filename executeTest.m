@@ -16,16 +16,16 @@ addpath('~/MIPDECO/Feuerprojekt/oFEM/projects/NEODYM/heat/');
 addpath('~/MIPDECO/Feuerprojekt/oFEM/source/');
 %%%%%controls
 finiteDifferences=1;
-loadedSolutionFD=0;
-contamination=0
+loadedSolutionFD=1;
+contamination=1
 global plotM;
 
 loader=0;
 video=1;
 eliminate=0;
 saver=1;
-scenario=2;
-xn=10;
+scenario=5;
+xn=11;
 tn=30;
 %%%%%setup
 if loader
@@ -67,7 +67,7 @@ else
             
         case 2
             [C,G,N]=constrGraph(0.2,0.15,8);
-            params=struct('xn',10:1:20,'tn',30:10:60,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-25*exp(-30*dot(x-xc,x-xc,1))));
+            params=struct('xn',11:1:20,'tn',30:10:60,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-25*exp(-30*dot(x-xc,x-xc,1))));
             [paramsControlled,paramsInhom]=PDEparams(2);
             arctime=params.time/30;
             usetime=params.time/20;
@@ -87,7 +87,7 @@ else
             usetime=params.time/15;
         case 5
             [C,G,N]=constrGraph(0.2,0.15,12);
-            params=struct('xn',30:5:30,'tn',60:10:60,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-30*exp(-30*dot(x-xc,x-xc,1))));
+            params=struct('xn',10:5:60,'tn',30:10:60,'Tmax',5,'Schwell',0.8,'slowdown',0.1,'N',N,'time',1,'u',@(x,xc) ofem.matrixarray(-30*exp(-30*dot(x-xc,x-xc,1))));
             [paramsControlled,paramsInhom]=PDEparams(11);
             arctime=params.time/30;
             usetime=params.time/20;
