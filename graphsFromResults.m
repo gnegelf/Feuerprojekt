@@ -26,7 +26,7 @@ noCbStruct.axis=[min(noCbStruct.xn),max(noCbStruct.xn),1,20000];
 
 
 noEliStruct.namecode='Results/stateNoEli';
-noEliStruct.xn=10:1:13;
+noEliStruct.xn=10:1:20;
 noEliStruct.tn=30:10:60;
 noEliStruct.durations=timelimit*ones(length(noEliStruct.xn),length(noEliStruct.tn));
 noEliStruct.cbnums=zeros(length(noEliStruct.xn),length(noEliStruct.tn));
