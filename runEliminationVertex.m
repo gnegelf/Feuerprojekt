@@ -53,12 +53,12 @@ else
     b_U2=[b_U;b_Uext2];
     b_L2=[b_L;b_Lext2];
     if ~contamination
-        saveName=sprintf('data/matrixData%d_%d_%d.mat',xn,tn,scenario);
+        saveName=sprintf('~/MIPDECO/Feuerprojekt/data/matrixData%d_%d_%d.mat',xn,tn,scenario);
         save(saveName,'A','b_U','b_L','c','solInhom','solBasis','-append');
         saveName=sprintf('~/python/data/feuerData%d_%d_%d.mat',xn,tn,scenario);
         save(saveName,'A2','-v7.3','Aext','b_Uext','b_Lext','xn','tn','intVarN','contVarN','b_U2','b_L2','c','Afull','b_Ufull','b_Lfull')
     else
-        saveName=sprintf('data/contaMatrixData%d_%d_%d.mat',xn,tn,scenario);
+        saveName=sprintf('~/MIPDECO/Feuerprojekt/data/contaMatrixData%d_%d_%d.mat',xn,tn,scenario);
         save(saveName,'A','b_U','b_L','c','solInhom','solBasis','-append');
         saveName=sprintf('~/python/data/contaData%d_%d_%d.mat',xn,tn,scenario);
         save(saveName,'A2','-v7.3','Aext','b_Uext','b_Lext','xn','tn','intVarN','contVarN','b_U2','b_L2','c','Afull','b_Ufull','b_Lfull')

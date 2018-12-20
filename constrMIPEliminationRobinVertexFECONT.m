@@ -42,7 +42,7 @@ for t=2:tn
      solBasis2(:,(t-1)*N+1:t*N)=[zeros((t-1)*size(contPos,1),N);zet2(1:(tn1-t+1)*size(contPos,1),:)];
 end
 
-solInhomRaw=heatRobin(gridPoints,0:dt:time,@(x) 0*ofem.matrixarray(x(1,1,:)),p1.initialT,paramsInhom,gridParams);
+solInhomRaw=heatRobinNew(gridPoints,0:dt:time,@(x) 0*ofem.matrixarray(x(1,1,:)),p1.initialT,paramsInhom,gridParams);
 solInhom=reshape(solInhomRaw(1:(xn+1)^2,:),(xn+1)^2*size(solInhomRaw,2),1);
 solInhom2=reshape(solInhomRaw(1+(xn+1)^2:size(solInhomRaw,1),:),size(contPos,1)*size(solInhomRaw,2),1);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

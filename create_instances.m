@@ -1,10 +1,5 @@
 function [dx] = create_instances(xnL,xnU,tnL,tnU,fd,conta)
-%clear all;
-%profile on;
-%Name='optControl';
 
-
-clear variables;
 global xn;
 global i2;
 global tn;
@@ -75,9 +70,9 @@ time=params.time; %the time the water has an effect.
 for xn=params.xn
     for tn=params.tn
         if contamination
-            save(sprintf('data/contaMatrixData%d_%d_%d.mat',xn,tn,scenario),'-v7.3','params','paramsControlled','paramsInhom','arctime','usetime','C','G','N');
+            save(sprintf('~/MIPDECO/Feuerprojekt/data/contaMatrixData%d_%d_%d.mat',xn,tn,scenario),'-v7.3','params','paramsControlled','paramsInhom','arctime','usetime','C','G','N');
         else
-            save(sprintf('data/matrixData%d_%d_%d.mat',xn,tn,scenario),'-v7.3','params','paramsControlled','paramsInhom','arctime','usetime','C','G','N');
+            save(sprintf('~/MIPDECO/Feuerprojekt/data/matrixData%d_%d_%d.mat',xn,tn,scenario),'-v7.3','params','paramsControlled','paramsInhom','arctime','usetime','C','G','N');
         end
         dt=time/tn;
         dx=1/xn;
