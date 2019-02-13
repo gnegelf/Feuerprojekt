@@ -140,7 +140,7 @@ switch choice
         end
     case 12
         N=50;
-        N1=10;
+        N1=6;
         N2=5;
         N=N1*N2;
         C=zeros(N+1,N+1,2);

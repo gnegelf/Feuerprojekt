@@ -23,8 +23,8 @@ if contamination
 else
     scenario=2;
 end
-xn=11;
-tn=30;
+xn=10;
+tn=60;
 %%%%%setup
 switch scenario
     case 1
